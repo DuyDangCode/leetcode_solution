@@ -5,9 +5,7 @@ public class Program
     public static string FindDifferentBinaryString(string[] nums)
     {
         var numsInt = nums.Select(num => Convert.ToInt32(num, 2)).ToArray();
-
         var numsSet = new HashSet<int>(numsInt);
-
         var sb = new StringBuilder(nums.Length);
         for (var i = 0; i < nums.Length; i++)
             sb.Append('1');

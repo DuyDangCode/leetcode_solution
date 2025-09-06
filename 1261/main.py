@@ -14,6 +14,7 @@ def travesal(root: Optional[TreeNode], x: int, y: int, node_set: set):
         return
     root.val = 2 * x + y
     node_set.add(root.val)
+    print("helo")
 
     travesal(root.left, root.val, 1, node_set)
     travesal(root.right, root.val, 2, node_set)

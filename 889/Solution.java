@@ -1,84 +1,83 @@
-import java.util.HashSet;
 import java.util.Stack;
 
 class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
+  int val;
+  TreeNode left;
+  TreeNode right;
 
-	TreeNode() {
-	}
+  TreeNode() {}
 
-	TreeNode(int val) {
-		this.val = val;
-	}
+  TreeNode(int val) {
+    this.val = val;
+  }
 
-	TreeNode(int val, TreeNode left, TreeNode right) {
-		this.val = val;
-		this.left = left;
-		this.right = right;
-	}
+  TreeNode(int val, TreeNode left, TreeNode right) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
 }
 
 public class Solution {
-	private boolean checkRelation(int valParent, int valChild, int[] postorder) {
-		int posParent = -1, posChild = -1;
 
-		for (var i = 0; i < postorder.length; i++) {
-			if (postorder[i] == valChild) {
-				posChild = i;
-			} else if (postorder[i] == valParent) {
-				posParent = i;
-			}
-			if (posParent != -1 && posChild != -1) {
-				break;
-			}
-		}
+  private boolean checkRelation(int valParent, int valChild, int[] postorder) {
+    int posParent = -1, posChild = -1;
 
-		return posParent > posChild;
-	}
+    for (var i = 0; i < postorder.length; i++) {
+      if (postorder[i] == valChild) {
+        posChild = i;
+      } else if (postorder[i] == valParent) {
+        posParent = i;
+      }
+      if (posParent != -1 && posChild != -1) {
+        break;
+      }
+    }
 
-	public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
-		Stack<TreeNode> stack = new Stack<>();
+    return posParent > posChild;
+  }
 
-		for (var i = 0; i < preorder.length; i++) {
-			if (i == 0) {
-				stack.push(new TreeNode(preorder[i]));
-				continue;
-			}
-			if (stack.isEmpty()) {
-				continue;
-			}
+  public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+    Stack<TreeNode> stack = new Stack<>();
 
-			while (!checkRelation(stack.peek().val, preorder[i], postorder)) {
-				stack.pop();
-			}
+    for (var i = 0; i < preorder.length; i++) {
+      if (i == 0) {
+        stack.push(new TreeNode(preorder[i]));
+        continue;
+      }
+      if (stack.isEmpty()) {
+        continue;
+      }
 
-			var currentNode = stack.peek();
-			var newNode = new TreeNode(preorder[i]);
+      while (!checkRelation(stack.peek().val, preorder[i], postorder)) {
+        stack.pop();
+      }
 
-			if (currentNode.left == null) {
-				currentNode.left = newNode;
-			} else {
-				currentNode.right = newNode;
-			}
-			stack.push(newNode);
-		}
+      var currentNode = stack.peek();
+      var newNode = new TreeNode(preorder[i]);
 
-		while (stack.size() > 1) {
-			stack.pop();
-		}
+      if (currentNode.left == null) {
+        currentNode.left = newNode;
+      } else {
+        currentNode.right = newNode;
+      }
+      stack.push(newNode);
+    }
 
-		return stack.pop();
-	}
+    while (stack.size() > 1) {
+      stack.pop();
+    }
 
-	public static void main(String[] args) {
+    return stack.pop();
+  }
 
-		try {
-			var solution = new Solution();
-			solution.constructFromPrePost(new int[] { 1, 2, 4, 5, 3, 6, 7 }, new int[] { 4, 5, 2, 6, 7, 3, 1 });
-		} catch (Exception e) {
-			System.err.println(e);
-		}
-	}
+  public static void main(String[] args) {
+    try {
+      var solution = new Solution();
+      solution.constructFromPrePost(
+          new int[] {1, 2, 4, 5, 3, 6, 7}, new int[] {4, 5, 2, 6, 7, 3, 1});
+    } catch (Exception e) {
+      System.err.println(e);
+    }
+  }
 }
